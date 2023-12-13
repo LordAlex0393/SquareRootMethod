@@ -1,12 +1,14 @@
 public class Main {
+    private static double[][] A = {
+            {3.2, 1.0, 1.0},
+            {1.0, 3.7, 1.0},
+            {1.0, 1.0, 4.2}
+    };
+
+    private static double[] B = {4, 4.5, 4};
 
     public static void main(String[] args) {
-        double[][] A = {
-                {3.2, 1.0, 1.0},
-                {1.0, 3.7, 1.0},
-                {1.0, 1.0, 4.2}
-        };
-        double[] B = {4, 4.5, 4};
+        initGUI();
 
         double X[] = solve(A, B);
 
@@ -14,6 +16,10 @@ public class Main {
         for(int i = 0; i < X.length; i++){
             System.out.printf("X%d = %.2f \n", i,  X[i]);
         }
+    }
+    public static void initGUI(){
+        SimpleGUI app = new SimpleGUI();
+        app.setVisible(true);
     }
 
     public static double[][] createMatrixT(double[][] A) {
