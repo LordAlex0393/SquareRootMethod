@@ -1,8 +1,10 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Random;
 import javax.swing.*;
 public class SimpleGUI extends JFrame{
     private JButton solveButton = new JButton("GO");
+    private JButton randomButton = new JButton("rand");
     private JTextField matrixTextField00 = new JTextField("0", 5);
     private JTextField matrixTextField01 = new JTextField("0", 5);
     private JTextField matrixTextField02 = new JTextField("0", 5);
@@ -38,7 +40,7 @@ public class SimpleGUI extends JFrame{
         container.add(matrixTextField02);
         container.add(matrixTextField30);
         container.add(solvedX1);
-        container.add(RESULT_LABEL);
+        container.add(randomButton);
         container.add(matrixTextField10);
         container.add(matrixTextField11);
         container.add(matrixTextField12);
@@ -52,9 +54,10 @@ public class SimpleGUI extends JFrame{
         container.add(solvedX3);
         container.add(ERROR_LABEL);
 
-        this.initMatrix();
+        //this.initMatrix();
 
         solveButton.addActionListener(new SolveButtonEventListener());
+        randomButton.addActionListener(new RandomButtonEventListener());
     }
 
     class SolveButtonEventListener implements ActionListener{
@@ -96,6 +99,12 @@ public class SimpleGUI extends JFrame{
             }
         }
     }
+
+    class RandomButtonEventListener implements ActionListener{
+        public void actionPerformed(ActionEvent e) {
+            generateMatrix();
+        }
+    }
     public void initMatrix(){
         matrixTextField00.setText("3.2");
         matrixTextField01.setText("1.0");
@@ -112,5 +121,43 @@ public class SimpleGUI extends JFrame{
         matrixTextField30.setText("4.0");
         matrixTextField31.setText("4.5");
         matrixTextField32.setText("4.0");
+    }
+    public void generateMatrix(){
+        Random rand = new Random();
+        int max = 21;
+        int min = 5;
+        int N = 3;
+        int[][] R = new int[N][N];
+        int sum = 0;
+
+        for(int i = 0; i < N; i++){
+            for(int j = i; j < N; j++){
+                if(i == j){
+                    R[i][j] = rand.nextInt(max - min) + min;
+                }
+                else{
+                    R[i][j] = rand.nextInt(max)%(R[i][i]/2);
+                    R[j][i] = R[i][j];
+                }
+                sum+=R[i][j];
+            }
+            sum = 0;
+        }
+
+        matrixTextField00.setText(String.valueOf(R[0][0]));
+        matrixTextField01.setText(String.valueOf(R[0][1]));
+        matrixTextField02.setText(String.valueOf(R[0][2]));
+
+        matrixTextField10.setText(String.valueOf(R[1][0]));
+        matrixTextField11.setText(String.valueOf(R[1][1]));
+        matrixTextField12.setText(String.valueOf(R[1][2]));
+
+        matrixTextField20.setText(String.valueOf(R[2][0]));
+        matrixTextField21.setText(String.valueOf(R[2][1]));
+        matrixTextField22.setText(String.valueOf(R[2][2]));
+
+        matrixTextField30.setText(String.valueOf(rand.nextInt(100)));
+        matrixTextField31.setText(String.valueOf(rand.nextInt(100)));
+        matrixTextField32.setText(String.valueOf(rand.nextInt(100)));
     }
 }
