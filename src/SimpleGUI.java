@@ -24,8 +24,9 @@ public class SimpleGUI extends JFrame{
 
     public SimpleGUI(){
         super("");
-        this.setBounds(820, 440, 420, 180);
+        this.setBounds(820, 440, 430, 180);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setTitle("SquareRootMethod");
         matrixTextField30.setHorizontalAlignment(SwingConstants.CENTER);
         matrixTextField31.setHorizontalAlignment(SwingConstants.CENTER);
         matrixTextField32.setHorizontalAlignment(SwingConstants.CENTER);
@@ -91,6 +92,7 @@ public class SimpleGUI extends JFrame{
                 for(int i = 0; i < X.length; i++){
                     System.out.printf("X%d = %.3f \n", i,  X[i]);
                 }
+                System.out.println("Is correct: " + Main.isCorrect(A, B, X));
             }
         }
     }

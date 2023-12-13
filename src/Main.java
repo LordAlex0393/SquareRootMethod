@@ -96,7 +96,6 @@ public class Main {
             for(int j = 0; j < A.length; j++){
                 if(i!=j){
                     sum+=Math.abs(A[i][j]);
-                    //System.out.println(i + ": " + sum);
                 }
             }
             if(Math.abs(A[i][i]) <= sum){
@@ -113,17 +112,7 @@ public class Main {
             return null;
         }
 
-//        for(int i = 0; i < T.length; i++){
-//            if(T[i][i] == 0){
-//                System.out.println("Система не имеет обределённого единственного решения");
-//            }
-//        }
-
         double[] Y = findY(T, B);
-//        System.out.println("Matrix Y:");
-//        for(int i = 0; i < Y.length; i++){
-//            System.out.printf("Y%d = %.2f \n", i,  Y[i]);
-//        }
         double[] X = findX(T, Y);
         return X;
     }
@@ -172,7 +161,7 @@ public class Main {
     }
 
     public static boolean compareMatrices(double[][] matrix1, double[][] matrix2) {
-        double eps = 0.1;
+        double eps = 0.000001;
         if (matrix1.length != matrix2.length || matrix1[0].length != matrix2[0].length) {
             return false;
         }
@@ -182,6 +171,21 @@ public class Main {
                     return false;
                 }
             }
+        }
+        return true;
+    }
+
+    public static boolean isCorrect(double[][] A, double[] B, double[] X){
+        double eps = 0.000001;
+        double sum = 0;
+        for(int i = 0; i < A.length; i++){
+            for(int j = 0; j < A[0].length; j++){
+                sum+=A[i][j]*X[j];
+            }
+            if(Math.abs(sum-B[i]) > eps){
+                return false;
+            }
+            sum = 0;
         }
         return true;
     }
