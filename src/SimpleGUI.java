@@ -86,6 +86,11 @@ public class SimpleGUI extends JFrame{
                 solvedX3.setText(String.format("X3 = %.2f", X[2]));
                 ERROR_LABEL.setForeground(Color.BLACK);
                 ERROR_LABEL.setText("");
+
+                System.out.println("Matrix X:");
+                for(int i = 0; i < X.length; i++){
+                    System.out.printf("X%d = %.2f \n", i,  X[i]);
+                }
             }
         }
     }

@@ -97,26 +97,24 @@ public class Main {
 
         var T = createMatrixT(A);
 
-        for(int i = 0; i < T.length; i++){
-            if(T[i][i] == 0){
-                System.out.println("Система не имеет обределённого единственного решения");
-                return null;
-            }
+        double[][] test = multiplyMatrices(transpose(T), T);
+        if(!compareMatrices(test, A)){
+            System.out.println("Ошибка в формировании матрицы T");
+            return null;
         }
 
-//        System.out.println("Upper Triangular Matrix:");
-//        printMatrix(T);
-//        System.out.println("Lower Triangular Matrix:");
-//        printMatrix(transpose(T));
+//        for(int i = 0; i < T.length; i++){
+//            if(T[i][i] == 0){
+//                System.out.println("Система не имеет обределённого единственного решения");
+//            }
+//        }
 
         double[] Y = findY(T, B);
-
 //        System.out.println("Matrix Y:");
 //        for(int i = 0; i < Y.length; i++){
 //            System.out.printf("Y%d = %.2f \n", i,  Y[i]);
 //        }
         double[] X = findX(T, Y);
-
         return X;
     }
 
@@ -138,5 +136,43 @@ public class Main {
             }
             System.out.println();
         }
+    }
+
+    public static double[][] multiplyMatrices(double[][] matrix1, double[][] matrix2) {
+        int m1 = matrix1.length;
+        int n1 = matrix1[0].length;
+        int m2 = matrix2.length;
+        int n2 = matrix2[0].length;
+
+        if (n1 != m2) {
+            throw new IllegalArgumentException();
+        }
+
+        double[][] result = new double[m1][n2];
+
+        for (int i = 0; i < m1; i++) {
+            for (int j = 0; j < n2; j++) {
+                for (int k = 0; k < n1; k++) {
+                    result[i][j] += matrix1[i][k] * matrix2[k][j];
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public static boolean compareMatrices(double[][] matrix1, double[][] matrix2) {
+        double eps = 0.001;
+        if (matrix1.length != matrix2.length || matrix1[0].length != matrix2[0].length) {
+            return false;
+        }
+        for (int i = 0; i < matrix1.length; i++) {
+            for (int j = 0; j < matrix1[0].length; j++) {
+                if (Math.abs(matrix1[i][j] - matrix2[i][j]) > eps) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
