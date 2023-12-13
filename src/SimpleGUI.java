@@ -81,15 +81,15 @@ public class SimpleGUI extends JFrame{
 
             }
             else {
-                solvedX1.setText(String.format("X1 = %.2f", X[0]));
-                solvedX2.setText(String.format("X2 = %.2f", X[1]));
-                solvedX3.setText(String.format("X3 = %.2f", X[2]));
+                solvedX1.setText(String.format("X1 = %.3f", X[0]));
+                solvedX2.setText(String.format("X2 = %.3f", X[1]));
+                solvedX3.setText(String.format("X3 = %.3f", X[2]));
                 ERROR_LABEL.setForeground(Color.BLACK);
                 ERROR_LABEL.setText("");
 
                 System.out.println("Matrix X:");
                 for(int i = 0; i < X.length; i++){
-                    System.out.printf("X%d = %.2f \n", i,  X[i]);
+                    System.out.printf("X%d = %.3f \n", i,  X[i]);
                 }
             }
         }

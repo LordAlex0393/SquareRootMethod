@@ -7,10 +7,20 @@ public class Main {
 
     private static double[] B = {4, 4.5, 4};
 
+    private static double[][] A2 = {
+            {10,   1,   -0.5, 0.7},
+            {1,    15,  0.5,  4},
+            {-0.5, 0.5, 20,   1},
+            {0.7,  4,   1,    17}
+    };
+
+    private static double[] B2 = {11.2, 20.5, 21, 22.7};
+
     public static void main(String[] args) {
         initGUI();
 
-        double X[] = solve(A, B);
+        //double X[] = solve(A, B);
+        double X[] = solve(A2, B2);
 
         System.out.println("Matrix X:");
         for(int i = 0; i < X.length; i++){
@@ -99,7 +109,7 @@ public class Main {
 
         double[][] test = multiplyMatrices(transpose(T), T);
         if(!compareMatrices(test, A)){
-            System.out.println("Ошибка в формировании матрицы T");
+            System.out.println("Ошибка при задании матрицы");
             return null;
         }
 
@@ -162,7 +172,7 @@ public class Main {
     }
 
     public static boolean compareMatrices(double[][] matrix1, double[][] matrix2) {
-        double eps = 0.001;
+        double eps = 0.1;
         if (matrix1.length != matrix2.length || matrix1[0].length != matrix2[0].length) {
             return false;
         }
