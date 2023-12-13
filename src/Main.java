@@ -1,45 +1,18 @@
 public class Main {
 
     public static void main(String[] args) {
-//        double[][] originalMatrix = {
-//                {4.0, 1.0, 2.0},
-//                {1.0, 9.0, 3.0},
-//                {2.0, 3.0, 16.0}
-//        };
-
-        double[][] originalMatrix = {
+        double[][] A = {
                 {3.2, 1.0, 1.0},
                 {1.0, 3.7, 1.0},
                 {1.0, 1.0, 4.2}
         };
         double[] B = {4, 4.5, 4};
 
-        var T = createMatrixT(originalMatrix);
+        double X[] = solve(A, B);
 
-        System.out.println("Upper Triangular Matrix:");
-        printMatrix(T);
-        System.out.println("Lower Triangular Matrix:");
-        printMatrix(transpose(T));
-
-        // Решаем систему уравнений
-        double[] Y = findY(T, B);
-        System.out.println("Matrix Y:");
-        System.out.printf("%.2f. %.2f. %.2f.\n", Y[0], Y[1], Y[2]);
-        double[] X = findX(T, Y);
-
-        // Выводим решение
-        System.out.println("Solving a system of equations:");
-        for (int i = 0; i < X.length; i++) {
-            System.out.println("X[" + i + "] = " + X[i]);
-        }
-    }
-
-    public static void printMatrix(double[][] matrix) {
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                System.out.printf("%.2f. ", matrix[i][j]);
-            }
-            System.out.println();
+        System.out.println("Matrix X:");
+        for(int i = 0; i < X.length; i++){
+            System.out.printf("X%d = %.2f \n", i,  X[i]);
         }
     }
 
@@ -100,6 +73,47 @@ public class Main {
         return X;
     }
 
+    public static double[] solve(double[][] A, double[] B){
+
+        for(int i = 0; i < A.length; i++){
+            int sum = 0;
+            for(int j = 0; j < A.length; j++){
+                if(i!=j){
+                    sum+=Math.abs(A[i][j]);
+                    //System.out.println(i + ": " + sum);
+                }
+            }
+            if(Math.abs(A[i][i]) <= sum){
+                System.out.println("Метод квадратных корней не применим");
+                return null;
+            }
+        }
+
+        var T = createMatrixT(A);
+
+        for(int i = 0; i < T.length; i++){
+            if(T[i][i] == 0){
+                System.out.println("Система не имеет обределённого единственного решения");
+                return null;
+            }
+        }
+
+//        System.out.println("Upper Triangular Matrix:");
+//        printMatrix(T);
+//        System.out.println("Lower Triangular Matrix:");
+//        printMatrix(transpose(T));
+
+        double[] Y = findY(T, B);
+
+//        System.out.println("Matrix Y:");
+//        for(int i = 0; i < Y.length; i++){
+//            System.out.printf("Y%d = %.2f \n", i,  Y[i]);
+//        }
+        double[] X = findX(T, Y);
+
+        return X;
+    }
+
     public static double[][] transpose(double[][] A) {
         int n = A.length;
         double[][] AT = new double[n][n];
@@ -109,5 +123,14 @@ public class Main {
             }
         }
         return AT;
+    }
+
+    public static void printMatrix(double[][] matrix) {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                System.out.printf("%.2f. ", matrix[i][j]);
+            }
+            System.out.println();
+        }
     }
 }
