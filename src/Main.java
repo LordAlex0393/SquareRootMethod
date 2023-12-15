@@ -13,11 +13,13 @@ public class Main {
     public static void main(String[] args) {
         initGUI();
 
-//        int N = 8;
+        int N = 8;
 //        double[][] A2 = generateMatrix(N);
 //        double[] B2 = generateSolutionMatrix(N);
 //        printFullMatrix(A2, B2);
 //        double X[] = solve(A2, B2);
+
+//        double X[] = сholeskyMethod(A, B);
 
         double X[] = solve(A, B);
         printFullMatrix(A, B);
@@ -26,6 +28,7 @@ public class Main {
         for(int i = 0; i < X.length; i++){
             System.out.printf("X%d\t=\t%.2f \n", i+1,  X[i]);
         }
+        System.out.println("Is correct: " + isCorrect(A, B, X));
     }
     public static void initGUI(){
         SimpleGUI app = new SimpleGUI();
@@ -74,16 +77,16 @@ public class Main {
         return Y;
     }
 
-    public static double[] findX(double[][] U, double[] Y) {
-        int n = U.length;
+    public static double[] findX(double[][] T, double[] Y) {
+        int n = T.length;
         double[] X = new double[n];
 
         for (int i = n - 1; i >= 0; i--) {
             double sum = 0;
             for (int j = i + 1; j < n; j++) {
-                sum += U[i][j] * X[j];
+                sum += T[i][j] * X[j];
             }
-            X[i] = (Y[i] - sum) / U[i][i];
+            X[i] = (Y[i] - sum) / T[i][i];
         }
 
         return X;
@@ -238,5 +241,48 @@ public class Main {
             }
             System.out.printf("\t= %.2f\n", B[i]);
         }
+    }
+    public static double[] сholeskyMethod(double[][] A, double[] b) {
+        int n = A.length;
+        double[][] L = new double[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j <= i; j++) {
+                double sum = 0;
+                if (j == i) {
+                    for (int k = 0; k < j; k++) {
+                        sum += L[j][k] * L[j][k];
+                    }
+                    L[j][j] = Math.sqrt(A[j][j] - sum);
+                } else {
+                    for (int k = 0; k < j; k++) {
+                        sum += L[i][k] * L[j][k];
+                    }
+                    if (L[j][j] != 0) {
+                        L[i][j] = (A[i][j] - sum) / L[j][j];
+                    }
+                }
+            }
+        }
+
+        // Решение Ly = b
+        double[] y = new double[n];
+        for (int i = 0; i < n; i++) {
+            double sum = 0;
+            for (int j = 0; j < i; j++) {
+                sum += L[i][j] * y[j];
+            }
+            y[i] = (b[i] - sum) / L[i][i];
+        }
+
+        // Решение L^T x = y
+        double[] x = new double[n];
+        for (int i = n - 1; i >= 0; i--) {
+            double sum = 0;
+            for (int j = i + 1; j < n; j++) {
+                sum += L[j][i] * x[j];
+            }
+            x[i] = (y[i] - sum) / L[i][i];
+        }
+        return x;
     }
 }
