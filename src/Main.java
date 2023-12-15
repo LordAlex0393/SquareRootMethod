@@ -1,30 +1,30 @@
+import java.util.Random;
+
 public class Main {
-    private static double[][] A = {
-            {3.2, 1.0, 1.0},
-            {1.0, 3.7, 1.0},
-            {1.0, 1.0, 4.2}
-    };
-
-    private static double[] B = {4, 4.5, 4};
-
-    private static double[][] A2 = {
+    private static final double[][] A = {
             {10,   1,   -0.5, 0.7},
             {1,    15,  0.5,  4},
             {-0.5, 0.5, 20,   1},
             {0.7,  4,   1,    17}
     };
 
-    private static double[] B2 = {11.2, 20.5, 21, 22.7};
+    private static final double[] B = {11.2, 20.5, 21, 22.7};
 
     public static void main(String[] args) {
         initGUI();
 
-        //double X[] = solve(A, B);
-        double X[] = solve(A2, B2);
+//        int N = 8;
+//        double[][] A2 = generateMatrix(N);
+//        double[] B2 = generateSolutionMatrix(N);
+//        printFullMatrix(A2, B2);
+//        double X[] = solve(A2, B2);
+
+        double X[] = solve(A, B);
+        printFullMatrix(A, B);
 
         System.out.println("Matrix X:");
         for(int i = 0; i < X.length; i++){
-            System.out.printf("X%d = %.2f \n", i,  X[i]);
+            System.out.printf("X%d\t=\t%.2f \n", i+1,  X[i]);
         }
     }
     public static void initGUI(){
@@ -91,17 +91,9 @@ public class Main {
 
     public static double[] solve(double[][] A, double[] B){
 
-        for(int i = 0; i < A.length; i++){
-            int sum = 0;
-            for(int j = 0; j < A.length; j++){
-                if(i!=j){
-                    sum+=Math.abs(A[i][j]);
-                }
-            }
-            if(Math.abs(A[i][i]) <= sum){
-                System.out.println("Метод квадратных корней не применим");
-                return null;
-            }
+        if(!isApplicable(A)){
+            System.out.println("Метод квадратных корней не применим");
+            return null;
         }
 
         var T = createMatrixT(A);
@@ -131,7 +123,7 @@ public class Main {
     public static void printMatrix(double[][] matrix) {
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[0].length; j++) {
-                System.out.printf("%.2f. ", matrix[i][j]);
+                System.out.printf("%.2f\t", matrix[i][j]);
             }
             System.out.println();
         }
@@ -188,5 +180,63 @@ public class Main {
             sum = 0;
         }
         return true;
+    }
+
+    public static boolean isApplicable(double[][] A){
+        for(int i = 0; i < A.length; i++){
+            int sum = 0;
+            for(int j = 0; j < A.length; j++){
+                if(i!=j){
+                    sum+=Math.abs(A[i][j]);
+                }
+            }
+            if(Math.abs(A[i][i]) <= sum){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static double[][] generateMatrix(int N) {
+        Random rand = new Random();
+        int max = 41;
+        int min = 9;
+        double[][] R = new double[N][N];
+        int sum = 0;
+
+        while (!isApplicable(R)) {
+            for (int i = 0; i < N; i++) {
+                for (int j = i; j < N; j++) {
+                    if (i == j) {
+                        R[i][j] = rand.nextInt(max - min) + min;
+                    } else {
+                        R[i][j] = (rand.nextInt(max-1)+1) % ((R[i][i] / (N - 1)) - 1);
+                        R[j][i] = R[i][j];
+                    }
+                    sum += R[i][j];
+                }
+                sum = 0;
+            }
+        }
+        return R;
+    }
+    public static double[] generateSolutionMatrix(int N) {
+        Random rand = new Random();
+        int max = 101;
+        int min = 5;
+        double[] R = new double[N];
+        for(int i = 0; i < N; i++){
+            R[i] = rand.nextInt(max-min)+min;
+        }
+        return R;
+    }
+
+    public static void printFullMatrix(double[][] matrix, double[] B) {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                System.out.printf("%.2f\t", matrix[i][j]);
+            }
+            System.out.printf("\t= %.2f\n", B[i]);
+        }
     }
 }

@@ -102,7 +102,7 @@ public class SimpleGUI extends JFrame{
 
     class RandomButtonEventListener implements ActionListener{
         public void actionPerformed(ActionEvent e) {
-            generateMatrix();
+            generate(3);
         }
     }
     public void initMatrix(){
@@ -122,27 +122,9 @@ public class SimpleGUI extends JFrame{
         matrixTextField31.setText("4.5");
         matrixTextField32.setText("4.0");
     }
-    public void generateMatrix(){
+    public void generate(int N){
         Random rand = new Random();
-        int max = 21;
-        int min = 5;
-        int N = 3;
-        int[][] R = new int[N][N];
-        int sum = 0;
-
-        for(int i = 0; i < N; i++){
-            for(int j = i; j < N; j++){
-                if(i == j){
-                    R[i][j] = rand.nextInt(max - min) + min;
-                }
-                else{
-                    R[i][j] = rand.nextInt(max)%(R[i][i]/2);
-                    R[j][i] = R[i][j];
-                }
-                sum+=R[i][j];
-            }
-            sum = 0;
-        }
+        double[][] R = Main.generateMatrix(3);
 
         matrixTextField00.setText(String.valueOf(R[0][0]));
         matrixTextField01.setText(String.valueOf(R[0][1]));
